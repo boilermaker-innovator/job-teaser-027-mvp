@@ -371,9 +371,8 @@
            async startRecording() {
                try {
                    const stream = await this.preview.captureStream(30);
-                   this.mediaRecorder = new MediaRecorder(stream, {
-                       mimeType: 'video/webm;codecs=vp9'
-                   });
+                   const mimeType = MediaRecorder.isTypeSupported('video/webm') ? 'video/webm' : 'video/mp4';
+this.mediaRecorder = new MediaRecorder(stream, { mimeType });
 
                    this.chunks = [];
                    this.mediaRecorder.ondataavailable = (e) => this.chunks.push(e.data);
