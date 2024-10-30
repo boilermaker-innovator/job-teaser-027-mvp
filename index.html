@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Teaser Creator</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.0/color-thief.umd.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f5f5f5;
+            color: #333333;
+        }
+        .container {
+            display: flex;
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+        }
+        .form-section, .preview-section {
+            flex: 1;
+            min-width: 300px;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #333333;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 8px;
+            background: #ffffff;
+            border: 1px solid #dddddd;
+            color: #333333;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #0a66c2;
+            box-shadow: 0 0 0 2px rgba(10, 102, 194, 0.1);
+        }
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        button {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            background: #0a66c2;
+            color: white;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background: #0a559e;
+        }
+        .preview-card {
+            background: #ffffff;
+            border: 1px solid #dddddd;
+            border-radius: 4px;
+            padding: 20px;
+        }
+        .logo-preview {
+            width: 100px;
+            height: 100px;
+            object-fit: contain;
+            margin-bottom: 10px;
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        .preview-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #dddddd;
+            background: #ffffff;
+        }
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            color: #666666;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        .tab:hover {
+            background: #f5f5f5;
+            color: #333333;
+        }
+        .tab.active {
+            color: #0a66c2;
+            border-bottom: 3px solid #0a66c2;
+            background: #ffffff;
+        }
+        .tab-content {
+            display: none;
+            padding: 20px 0;
+            color: #333333;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            background: #f5f5f5;
+            border-radius: 4px;
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        h2, h3 {
+            color: #333333;
+            margin-top: 0;
+        }
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            .button-group {
+                flex-direction: column;
+            }
+            button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="form-section">
+            <h2>Job Teaser Creator</h2>
+            <form id="jobForm">
+                <div class="form-group">
+                    <label for="jobTitle">Job Title</label>
+                    <input type="text" id="jobTitle" required>
+                </div>
+                <div class="form-group">
+                    <label for="companyName">Company Name</label>
+                    <input type="text" id="companyName" required>
+                </div>
+                <div class="form-group">
+                    <label for="location">Location</label>
+                    <input type="text" id="location" required>
+                </div>
+                <div class="form-group">
+                    <label for="logoUrl">Logo URL</label>
+                    <input type="url" id="logoUrl" required>
+                </div>
+                <div class="form-group">
+                    <label for="overview">Overview</label>
+                    <textarea id="overview" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="requirements">Requirements</label>
+                    <textarea id="requirements" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="benefits">Benefits</label>
+                    <textarea id="benefits" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="videoUrl">YouTube Video URL</label>
+                    <input type="url" id="videoUrl" placeholder="https://www.youtube.com/watch?v=...">
+                </div>
+                <div class="button-group">
+                    <button type="button" id="prefillBtn">Pre-fill Test Data</button>
+                    <button type="button" id="updatePreviewBtn">Update Preview</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="preview-section">
+            <h2>Preview</h2>
+            <div id="previewCard" class="preview-card">
+                <div class="preview-header">
+                    <img id="logoPreview" class="logo-preview" crossorigin="anonymous">
+                    <div>
+                        <h3 id="titlePreview"></h3>
+                        <p id="companyLocationPreview"></p>
+                    </div>
+                </div>
+                <div class="tabs" id="tabsContainer">
+                    <button class="tab active" data-tab="overview">Overview</button>
+                    <button class="tab" data-tab="requirements">Requirements</button>
+                    <button class="tab" data-tab="benefits">Benefits</button>
+                    <button class="tab" data-tab="video">Watch</button>
+                </div>
+                <div id="overview-tab" class="tab-content active"></div>
+                <div id="requirements-tab" class="tab-content"></div>
+                <div id="benefits-tab" class="tab-content"></div>
+                <div id="video-tab" class="tab-content">
+                    <div class="video-container" id="videoContainer"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const colorThief = new ColorThief();
+        const testData = {
+            jobTitle: "Senior Boilermaker",
+            companyName: "Mining Solutions Ltd",
+            location: "Perth, WA",
+            logoUrl: "https://via.placeholder.com/150/0A66C2/FFFFFF?text=MS",
+            overview: "Join our premier mining maintenance team working on critical infrastructure projects across Western Australia.",
+            requirements: "• Trade Qualified Boilermaker\n• 5+ years experience in mining maintenance\n• Strong focus on safety\n• HRWL - DG, RB, LF",
+            benefits: "• Competitive salary $120k-$150k\n• 2/1 FIFO roster\n• Comprehensive health insurance\n• Performance bonuses",
+            videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+        };
+
+        let rotationInterval;
+        let rotationCount = 0;
+        const maxRotations = 1;
+
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(`${tabName}-tab`).classList.add('active');
+        }
+
+        function startTabRotation() {
+            const tabs = ['overview', 'requirements', 'benefits', 'video'];
+            let currentIndex = 0;
+            rotationCount = 0;
+
+            if (rotationInterval) {
+                clearInterval(rotationInterval);
+            }
+
+            rotationInterval = setInterval(() => {
+                currentIndex = (currentIndex + 1) % tabs.length;
+                switchTab(tabs[currentIndex]);
+
+                if (currentIndex === 0) {
+                    rotationCount++;
+                }
+
+                if (rotationCount >= maxRotations) {
+                    clearInterval(rotationInterval);
+                }
+            }, 3000);
+        }
+
+        function extractVideoId(url) {
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+            const match = url.match(regExp);
+            return (match && match[2].length === 11) ? match[2] : null;
+        }
+
+        function updatePreview() {
+            const logoUrl = document.getElementById('logoUrl').value;
+            const jobTitle = document.getElementById('jobTitle').value;
+            const companyName = document.getElementById('companyName').value;
+            const location = document.getElementById('location').value;
+            const overview = document.getElementById('overview').value;
+            const requirements = document.getElementById('requirements').value;
+            const benefits = document.getElementById('benefits').value;
+            const videoUrl = document.getElementById('videoUrl').value;
+
+            document.getElementById('titlePreview').textContent = jobTitle;
+            document.getElementById('companyLocationPreview').textContent = `${companyName} - ${location}`;
+            document.getElementById('overview-tab').innerHTML = `<p>${overview.replace(/\n/g, '<br>')}</p>`;
+            document.getElementById('requirements-tab').innerHTML = `<p>${requirements.replace(/\n/g, '<br>')}</p>`;
+            document.getElementById('benefits-tab').innerHTML = `<p>${benefits.replace(/\n/g, '<br>')}</p>`;
+
+            const videoId = extractVideoId(videoUrl);
+            if (videoId) {
+                document.getElementById('videoContainer').innerHTML = `
+                    <iframe 
+                        src="https://www.youtube.com/embed/${videoId}" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                    </iframe>`;
+            }
+
+            const logoImg = document.getElementById('logoPreview');
+            logoImg.src = logoUrl;
+            logoImg.crossOrigin = 'Anonymous';
+            
+            logoImg.onload = function() {
+                try {
+                    const color = colorThief.getColor(logoImg);
+                    const rgbColor = `rgb(${color.join(',')})`;
+                    
+                    document.getElementById('previewCard').style.borderColor = rgbColor;
+                    document.getElementById('titlePreview').style.color = rgbColor;
+                    document.querySelector('.preview-card').style.borderTop = `4px solid ${rgbColor}`;
+                    
+                    document.querySelectorAll('.tab.active').forEach(tab => {
+                        tab.style.borderBottomColor = rgbColor;
+                        tab.style.color = rgbColor;
+                    });
+                } catch (error) {
+                    console.error('Color extraction failed:', error);
+                }
+            };
+
+            startTabRotation();
+        }
+
+        document.getElementById('prefillBtn').addEventListener('click', () => {
+            document.getElementById('jobTitle').value = testData.jobTitle;
+            document.getElementById('companyName').value = testData.companyName;
+            document.getElementById('location').value = testData.location;
+            document.getElementById('logoUrl').value = testData.logoUrl;
+            document.getElementById('overview').value = testData.overview;
+            document.getElementById('requirements').value = testData.requirements;
+            document.getElementById('benefits').value = testData.benefits;
+            document.getElementById('videoUrl').value = testData.videoUrl;
+            updatePreview();
+        });
+
+        document.getElementById('updatePreviewBtn').addEventListener('click', updatePreview);
+
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                clearInterval(rotationInterval);
+                switchTab(tab.dataset.tab);
+            });
+        });
+    </script>
+</body>
+</html>
