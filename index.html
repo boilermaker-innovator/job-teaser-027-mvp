@@ -438,24 +438,41 @@ this.mediaRecorder = new MediaRecorder(stream, { mimeType });
        recordButton.textContent = 'Record Preview';
        recordButton.onclick = () => recorder.startRecording();
        document.querySelector('.button-group').appendChild(recordButton);
+
+       function recordToGif() {
+    const previewCard = document.querySelector('.preview-card');
+    let frames = [];
+    let frameCount = 0;
+    const totalFrames = 20;
+
+    const captureFrame = () => {
+        html2canvas(previewCard).then(canvas => {
+            frames.push(canvas.toDataURL());
+            frameCount++;
+            
+            if (frameCount < totalFrames) {
+                setTimeout(captureFrame, 200);
+            } else {
+                gifshot.createGIF({
+                    images: frames,
+                    interval: 0.2,
+                    gifWidth: previewCard.offsetWidth,
+                    gifHeight: previewCard.offsetHeight
+                }, function(obj) {
+                    if(!obj.error) {
+                        const link = document.createElement('a');
+                        link.href = obj.image;
+                        link.download = 'job-teaser.gif';
+                        link.click();
+                    }
+                });
+            }
+        });
+    };
+
+    captureFrame();
+}
    </script>
 </body>
 </html>
-</html>
-        <body>
-    <!-- Existing content -->
-    <div class="container">
-        <!-- Form and preview sections -->
-    </div>
-
-    <!-- Existing script with colorThief and preview logic -->
-    <script>
-        // Your existing JavaScript code
-    </script>
-
-    <!-- Add the new recording functionality here -->
-    <script>
-        // Paste the PreviewRecorder class code here
-    </script>
-</body>
-</html>
+        
