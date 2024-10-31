@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Job Teaser Creator</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.0/color-thief.umd.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gifshot/0.4.5/gifshot.min.js"></script>
     <style>
         body {
             font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -360,32 +362,7 @@
            });
        });
 
-       class PreviewRecorder {
-           constructor(previewElement) {
-               this.preview = previewElement;
-               this.mediaRecorder = null;
-               this.chunks = [];
-               this.isRecording = false;
-           }
-
-           async startRecording() {
-               try {
-                   const stream = await this.preview.captureStream(30);
-                   const mimeType = MediaRecorder.isTypeSupported('video/webm') ? 'video/webm' : 'video/mp4';
-this.mediaRecorder = new MediaRecorder(stream, { mimeType });
-
-                   this.chunks = [];
-                   this.mediaRecorder.ondataavailable = (e) => this.chunks.push(e.data);
-                   this.mediaRecorder.onstop = () => this.processRecording();
-
-                   await this.countdown();
-                   this.mediaRecorder.start();
-                   this.isRecording = true;
-
-                   setTimeout(() => this.stopRecording(), 12000);
-               } catch (error) {
-                   console.error('Recording failed:', error);
-                   alert('Recording failed. Please check browser compatibility.');
+       
                }
            }
 
@@ -431,13 +408,6 @@ this.mediaRecorder = new MediaRecorder(stream, { mimeType });
                URL.revokeObjectURL(url);
            }
        }
-
-       // Initialize recorder and add button
-       const recorder = new PreviewRecorder(document.querySelector('.preview-card'));
-       const recordButton = document.createElement('button');
-       recordButton.textContent = 'Record Preview';
-       recordButton.onclick = () => recorder.startRecording();
-       document.querySelector('.button-group').appendChild(recordButton);
 
        function recordToGif() {
     const previewCard = document.querySelector('.preview-card');
