@@ -396,17 +396,6 @@
                this.preview.removeChild(overlay);
            }
 
-           async processRecording() {
-               const blob = new Blob(this.chunks, { type: 'video/webm' });
-               const url = URL.createObjectURL(blob);
-               
-               const a = document.createElement('a');
-               a.href = url;
-               a.download = 'job-teaser.webm';
-               a.click();
-               
-               URL.revokeObjectURL(url);
-           }
        }
        function recordToGif() {
     const previewCard = document.querySelector('.preview-card');
