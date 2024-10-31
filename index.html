@@ -389,14 +389,6 @@
                `;
                this.preview.appendChild(overlay);
 
-               for (let i = 3; i > 0; i--) {
-                   overlay.textContent = i;
-                   await new Promise(resolve => setTimeout(resolve, 1000));
-               }
-               this.preview.removeChild(overlay);
-           }
-
-       }
        function recordToGif() {
     const previewCard = document.querySelector('.preview-card');
     let frames = [];
