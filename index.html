@@ -3,164 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Job Teaser Creator</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.0/color-thief.umd.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gifshot/0.4.5/gifshot.min.js"></script>
-    <style>
-        body {
-            font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", sans-serif;
-            margin: 0;
-            padding: 20px;
-            background: #f5f5f5;
-            color: #333333;
-        }
-        .container {
-            display: flex;
-            gap: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-            flex-wrap: wrap;
-        }
-        .form-section, .preview-section {
-            flex: 1;
-            min-width: 300px;
-            background: #ffffff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 500;
-            color: #333333;
-        }
-        input, textarea {
-            width: 100%;
-            padding: 8px;
-            background: #ffffff;
-            border: 1px solid #dddddd;
-            color: #333333;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-        input:focus, textarea:focus {
-            outline: none;
-            border-color: #0a66c2;
-            box-shadow: 0 0 0 2px rgba(10, 102, 194, 0.1);
-        }
-        textarea {
-            min-height: 100px;
-            resize: vertical;
-        }
-        .button-group {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-        }
-        button {
-            padding: 8px 16px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: 500;
-            background: #0a66c2;
-            color: white;
-            transition: background-color 0.3s;
-        }
-        button:hover {
-            background: #0a559e;
-        }
-        .preview-card {
-            background: #ffffff;
-            border: 1px solid #dddddd;
-            border-radius: 4px;
-            padding: 20px;
-        }
-        .logo-preview {
-            width: 100px;
-            height: 100px;
-            object-fit: contain;
-            margin-bottom: 10px;
-            background: white;
-            padding: 10px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-        }
-        .preview-header {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-        .tabs {
-            display: flex;
-            margin-bottom: 20px;
-            border-bottom: 1px solid #dddddd;
-            background: #ffffff;
-        }
-        .tab {
-            padding: 10px 20px;
-            cursor: pointer;
-            border: none;
-            background: transparent;
-            color: #666666;
-            font-weight: 500;
-            transition: all 0.3s;
-        }
-        .tab:hover {
-            background: #f5f5f5;
-            color: #333333;
-        }
-        .tab.active {
-            color: #0a66c2;
-            border-bottom: 3px solid #0a66c2;
-            background: #ffffff;
-        }
-        .tab-content {
-            display: none;
-            padding: 20px 0;
-            color: #333333;
-        }
-        .tab-content.active {
-            display: block;
-        }
-        .video-container {
-            position: relative;
-            padding-bottom: 56.25%;
-            height: 0;
-            overflow: hidden;
-            background: #f5f5f5;
-            border-radius: 4px;
-        }
-        .video-container iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-        h2, h3 {
-            color: #333333;
-            margin-top: 0;
-        }
-        @media (max-width: 768px) {
-            .container {
-                flex-direction: column;
-            }
-            .button-group {
-                flex-direction: column;
-            }
-            button {
-                width: 100%;
-            }
-        }
-    </style>
+    <title>My GoFundMe Teaser Page</title>
+    <!-- You may have additional styles or links here -->
 </head>
+<body>
+
+    <!-- Paste the entire GoFundMe Teaser HTML and JavaScript here -->
+
+    <div>
+        <button id="prefillBtn">Prefill Test Data</button>
+        <button id="updatePreviewBtn">Update Preview</button>
+    </div>
+
+    <div>
+        <!-- Input fields for the GoFundMe teaser data -->
+        <label>Campaign Title: <input type="text" id="campaignTitle"></label><br>
+        <label>Organizer: <input type="text" id="campaignOrganizer"></label><br>
+        <label>Goal Amount: <input type="text" id="goalAmount"></label><br>
+        <label>Current Amount Raised: <input type="text" id="currentAmount"></label><br>
+        <label>Campaign Image URL: <input type="text" id="campaignImageUrl"></label><br>
+        <label>Description: <textarea id="description"></textarea></label><br>
+    </div>
+
+    <div id="previewCard">
+        <img id="campaignImagePreview" src="" alt="Campaign Image">
+        <h3 id="campaignTitlePreview"></h3>
+        <p id="campaignOrganizerPreview"></p>
+        <p id="goalAmountPreview"></p>
+        <p id="currentAmountPreview"></p>
+        <p id="descriptionPreview"></p>
+    </div>
+
+    <script>
+        const testData = {
+            campaignTitle: "Help Rebuild Our Community Center",
+            campaignOrganizer: "John Doe",
+            goalAmount: "$10,000",
+            currentAmount: "$5,300",
+            campaignImageUrl: "https://example.com/campaign.jpg",
+            description: "We are raising funds to rebuild the community center that was destroyed in a recent storm. Any contribution helps!"
+        };
+
+        function updatePreview() {
+            document.getElementById('campaignTitlePreview').textContent = document.getElementById('campaignTitle').value;
+            document.getElementById('campaignOrganizerPreview').textContent = `Organizer: ${document.getElementById('campaignOrganizer').value}`;
+            document.getElementById('goalAmountPreview').textContent = `Goal: ${document.getElementById('goalAmount').value}`;
+            document.getElementById('currentAmountPreview').textContent = `Raised: ${document.getElementById('currentAmount').value}`;
+            document.getElementById('descriptionPreview').textContent = document.getElementById('description').value;
+
+            const campaignImageUrl = document.getElementById('campaignImageUrl').value;
+            document.getElementById('campaignImagePreview').src = campaignImageUrl;
+        }
+
+        document.getElementById('updatePreviewBtn').addEventListener('click', updatePreview);
+        document.getElementById('prefillBtn').addEventListener('click', () => {
+            document.getElementById('campaignTitle').value = testData.campaignTitle;
+            document.getElementById('campaignOrganizer').value = testData.campaignOrganizer;
+            document.getElementById('goalAmount').value = testData.goalAmount;
+            document.getElementById('currentAmount').value = testData.currentAmount;
+            document.getElementById('campaignImageUrl').value = testData.campaignImageUrl;
+            document.getElementById('description').value = testData.description;
+            updatePreview();
+        });
+
+        updatePreview();
+    </script>
+
+</body>
+</html>
+
 <body>
    <div class="container">
        <div class="form-section">
